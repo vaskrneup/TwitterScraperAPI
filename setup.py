@@ -10,7 +10,7 @@ classifiers = [
 
 setup(
     name='TwitterScraperAPI',
-    version='1.0.2',
+    version='1.0.6',
     description='Library for getting twitter data',
     long_description=open('README.md').read() + '\n\n' + open('CHANGELOG.txt').read(),
     url='https://github.com/vaskrneup/TwitterScraperAPI',
@@ -19,6 +19,6 @@ setup(
     license='MIT',
     classifiers=classifiers,
     keywords='twitter scraper',
-    packages=["TwitterScraperAPI"],
+    packages=find_packages(),
     install_requires=['beautifulsoup4', 'requests']
 )
