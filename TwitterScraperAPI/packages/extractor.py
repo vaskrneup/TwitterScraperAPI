@@ -67,13 +67,14 @@ class ProfileExtractors:
 
     def get_location(self):
         return self.return_default(
-            lambda: self.soup.select("div.location")[0].text, IndexError
+            lambda: self.soup.select("div.location")[0].text,
+            IndexError
         )
 
     def get_website(self):
         return self.return_default(
             lambda: self.soup.select("a.twitter-timeline-link")[0].attrs["data-url"],
-            IndexError, AttributeError
+            IndexError, AttributeError, KeyError
         )
 
     def get_timestamp(self):
