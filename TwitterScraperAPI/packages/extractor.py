@@ -1,9 +1,14 @@
 from bs4 import BeautifulSoup
+import datetime
 
 
 class ProfileExtractors:
     BASE_URL = "https://mobile.twitter.com"
     MAIN_TWITTER_BASE_URL = "https://twitter.com"
+
+    DATE_FORMATS = [
+        "%b %d %Y"
+    ]
 
     def __init__(self, soup: BeautifulSoup, default_return="", post_process_func=None, use_post_process=True,
                  use_filter=True):
@@ -49,6 +54,26 @@ class ProfileExtractors:
 
         return data
 
+    def date_formatter(self, date):
+        date = date.strip()
+        _temp = date
+
+        if len(date) < 4:
+            return datetime.datetime.now()
+
+        if len(date) < 8:
+            date = f"{date} 2020"
+
+        for date_format in self.DATE_FORMATS:
+            try:
+                return datetime.datetime.strptime(
+                    date, date_format
+                )
+            except ValueError:
+                pass
+
+        return _temp
+
     # Extractor From Here !!
     def get_tweet_following_followers(self, remove_comma=False):
         data = [data.text.replace(",", "") if remove_comma else data.text for data in self.soup.select("div.statnum")]
@@ -78,11 +103,12 @@ class ProfileExtractors:
             IndexError, AttributeError, KeyError
         )
 
-    def get_timestamp(self):
-        return self.return_default(
-            lambda: self.soup.select("td.timestamp a")[0].text,
+    def get_timestamp(self, soup):
+        date = self.return_default(
+            lambda: soup[0].select("td.timestamp a")[0].text,
             AttributeError, IndexError
         )
+        return self.date_formatter(date)
 
     def get_tweets(self, filters=None, include=None):
         if include and type(include) != list:
@@ -103,7 +129,7 @@ class ProfileExtractors:
                     "body": self.default_return,
                     "body_mentions": [],
                     "body_urls": [],
-                    "time_stamp": self.default_return,
+                    "time_stamp": self.get_timestamp(self.soup.select("tr.tweet-header")),
                 }
 
                 try:
@@ -167,7 +193,6 @@ class ProfileExtractors:
             "full_name": self.get_full_name(),
             "location": self.get_location(),
             "website": self.get_website(),
-            "timestamp": self.get_timestamp()
         }
 
         return {key: temp[key] for key in include} if include else temp
