@@ -10,10 +10,10 @@ classifiers = [
 
 setup(
     name='TwitterScraperAPI',
-    version='1.0.0',
+    version='1.0.2',
     description='Library for getting twitter data',
     long_description=open('README.md').read() + '\n\n' + open('CHANGELOG.txt').read(),
-    url='',
+    url='https://github.com/vaskrneup/TwitterScraperAPI',
     author='Bhaskar Neupane',
     author_email='bhaskar.neupane.58@gmail.com',
     license='MIT',
