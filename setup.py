@@ -19,6 +19,6 @@ setup(
     license='MIT',
     classifiers=classifiers,
     keywords='twitter scraper',
-    packages=find_packages(),
+    packages=["TwitterScraperAPI"],
     install_requires=['beautifulsoup4', 'requests']
 )

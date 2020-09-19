@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-from packages import default_data, extractor
+from TwitterScraperAPI.packages import extractor, default_data
 
 
 class TwitterAPI(default_data.DefaultData):
