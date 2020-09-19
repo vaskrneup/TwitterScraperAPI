@@ -51,7 +51,8 @@ class ProfileExtractors:
 
     # Extractor From Here !!
     def get_tweet_following_followers(self, remove_comma=False):
-        return (data.text.replace(",", "") if remove_comma else data.text for data in self.soup.select("div.statnum"))
+        data = [data.text.replace(",", "") if remove_comma else data.text for data in self.soup.select("div.statnum")]
+        return data if len(data) == 3 else [0, 0, 0]
 
     def get_profile_picture(self):
         return self.return_default(
