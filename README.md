@@ -1,3 +1,3 @@
-### Library for getting twitter data
+# Library for getting twitter data
 
-# NOTE: It is under construction
+#### NOTE: It is under construction
