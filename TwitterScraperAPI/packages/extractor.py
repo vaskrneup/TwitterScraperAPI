@@ -103,12 +103,12 @@ class ProfileExtractors:
             IndexError, AttributeError, KeyError
         )
 
-    def get_timestamp(self, soup):
+    def get_timestamp(self, soup, raw=False):
         date = self.return_default(
-            lambda: soup[0].select("td.timestamp a")[0].text,
+            lambda: soup.select("td.timestamp a")[0].text,
             AttributeError, IndexError
         )
-        return self.date_formatter(date)
+        return date if raw else self.date_formatter(date)
 
     def get_tweets(self, filters=None, include=None):
         if include and type(include) != list:
@@ -118,7 +118,14 @@ class ProfileExtractors:
         _tweets = []
 
         if tweets:
+            c = 0
             for tweet in tweets:
+                try:
+                    raw_timestamp = self.soup.select("tr.tweet-header")[c]
+                except IndexError:
+                    print("ERROR !!")
+                c += 1
+
                 container = {
                     "is_retweeted": False,
                     "username": self.default_return,
@@ -129,7 +136,8 @@ class ProfileExtractors:
                     "body": self.default_return,
                     "body_mentions": [],
                     "body_urls": [],
-                    "time_stamp": self.get_timestamp(self.soup.select("tr.tweet-header")),
+                    "time_stamp": self.get_timestamp(raw_timestamp) if raw_timestamp else "",
+                    "raw_time_stamp": self.get_timestamp(raw_timestamp, raw=True) if raw_timestamp else "",
                 }
 
                 try:
