@@ -99,7 +99,7 @@ class ProfileExtractors:
 
     def get_website(self):
         return self.return_default(
-            lambda: self.soup.select("a.twitter-timeline-link")[0].attrs["data-url"],
+            lambda: self.soup.select("a.twitter-timeline-link")[-1].attrs["data-url"],
             IndexError, AttributeError, KeyError
         )
 
