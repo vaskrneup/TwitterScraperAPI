@@ -59,6 +59,16 @@ class ProfileExtractors:
         _temp = date
 
         if len(date) < 4:
+            if "m" in date:
+                time = date.replace("m", "")
+                return datetime.datetime.now() - datetime.timedelta(minutes=int(time))
+            elif "h" in date:
+                time = date.replace("h", "")
+                return datetime.datetime.now() - datetime.timedelta(hours=int(time))
+            elif "s" in date:
+                time = date.replace("s", "")
+                return datetime.datetime.now() - datetime.timedelta(seconds=int(time))
+
             return datetime.datetime.now()
 
         if len(date) < 8:
@@ -123,7 +133,7 @@ class ProfileExtractors:
                 try:
                     raw_timestamp = self.soup.select("tr.tweet-header")[c]
                 except IndexError:
-                    print("ERROR !!")
+                    raw_timestamp = None
                 c += 1
 
                 container = {
